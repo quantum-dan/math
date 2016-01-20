@@ -23,12 +23,14 @@ impl Fraction {
     }
     fn simplify(&self) -> Fraction {
         // Simplifies by recursively reducing by GCD of numerator and denominator
-        let val = gcd(self.num, self.den);
-        if val > 1 {
-            Fraction::new(self.num/val, self.den/val).simplify()
-        } else {
-            Fraction::new(self.num, self.den)
+        let mut val = gcd(self.num, self.den);
+        let mut result = Fraction::new(self.num, self.den);
+        while val > 1 {
+            result.num /= val;
+            result.den /= val;
+            val = gcd(result.num, result.den);
         }
+        result
     }
     fn add(x: Fraction, y: Fraction) -> Fraction {
         if x.den != y.den {
@@ -93,6 +95,7 @@ fn integral<F>(function: F, min: Fraction, max: Fraction, step: Fraction) -> Fra
             if Fraction::comp(Fraction::add(current, step), max) != -1 {
                 result = Fraction::add(result, Fraction::mult(function(max), step));
             }
+            result = result.simplify();
             current = Fraction::add(current, step);
         }
     }
