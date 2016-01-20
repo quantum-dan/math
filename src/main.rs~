@@ -89,7 +89,7 @@ fn integral<F>(function: F, min: Fraction, max: Fraction, step: Fraction) -> Fra
     let mut current = min;
     if Fraction::comp(min, max) == -1 {
     	while Fraction::comp(current, max) == -1 {
-            result = Fraction::add(result, Fraction::mult(function(current), step));
+            result = Fraction::add(result, Fraction::mult(function(current)), step);
             if Fraction::comp(Fraction::add(current, step), max) != -1 {
                 result = Fraction::add(result, Fraction::mult(function(max), step));
             }
