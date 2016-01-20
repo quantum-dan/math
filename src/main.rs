@@ -1,4 +1,5 @@
 struct Fraction {
+    // Fraction allows arbitrary precision until a numeric value is required, at which point it can be converted to float
     num: i64, // Numerator
 	den: i64, // Denominator
 }
@@ -21,6 +22,7 @@ impl Fraction {
         (self.num as f64)/(self.den as f64)
     }
     fn simplify(&self) -> Fraction {
+        // Simplifies by recursively reducing by GCD of numerator and denominator
         let val = gcd(self.num, self.den);
         if val > 1 {
             Fraction::new(self.num/val, self.den/val).simplify()
@@ -51,6 +53,7 @@ impl Fraction {
         Fraction::mult(x, y.inverse())
     }
     fn comp(x: Fraction, y: Fraction) -> i8 {
+        // Compares two fractions (using floating point values for simplicity), returning 1 for GT, 0 for EQ, -1 for LT
         let val = x.to_float() - y.to_float();
         if val > 0.0 {
             1
@@ -66,6 +69,7 @@ impl Fraction {
 }
 
 fn gcd(mut x: i64, mut y: i64) -> i64 {
+    // Implements Euclid's Method
     while x > 0 && y > 0 {
         if x > y {
             x -= y;
@@ -80,11 +84,12 @@ fn gcd(mut x: i64, mut y: i64) -> i64 {
 
 fn integral<F>(function: F, min: Fraction, max: Fraction, step: Fraction) -> Fraction
     where F: Fn(Fraction) -> Fraction {
+        // Integral applying some function over some range with specified step, all fractions.
         if Fraction::comp(min, max) == -1 {
             Fraction::add(Fraction::mult(function(min), step), (if Fraction::comp(Fraction::add(min, step), max) == -1 {
                 integral(function, Fraction::add(min, step).simplify(), max, step)
             } else {
-                Fraction::zero()
+                Fraction::mult(function(max), step) 
             })).simplify()
         } else {
             Fraction::zero()
