@@ -97,15 +97,6 @@ fn integral<F>(function: F, min: Fraction, max: Fraction, step: Fraction) -> Fra
         }
     }
     result
-        /* if Fraction::comp(min, max) == -1 {
-            Fraction::add(Fraction::mult(function(min), step), (if Fraction::comp(Fraction::add(min, step), max) == -1 {
-                integral(function, Fraction::add(min, step).simplify(), max, step)
-            } else {
-                Fraction::mult(function(max), step) 
-            })).simplify()
-        } else {
-            Fraction::zero()
-        } */
 }
 
 fn main() {
